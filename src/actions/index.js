@@ -1,43 +1,42 @@
-export const GET_CRYPTOS = 'GET_CRYPTOS';
-export const GET_CRYPTOS_SUCCESS = 'GET_CRYPTOS_SUCCESS';
-export const GET_CRYPTOS_FAILURE = 'GET_CRYPTOS_FAILURE';
-export const SELECT_CURRENCY = 'SELECT_CURRENCY';
+export const GET_USERS = 'GET_USERS';
+export const GET_USERS_SUCCESS = 'GET_USERS_SUCCESS';
+export const GET_USERS_FAILURE = 'GET_USERS_FAILURE';
 
 /**
  * Get Cryptocurrencies.
  * 
  * @returns {Object} action.
  */
-export const getCryptos = () => {
+export const getUsers = () => {
     return {
-        type: GET_CRYPTOS,
+        type: GET_USERS,
         sentAt: Date.now()
     };
 };
 
 /**
- *  Cryptocurrencies successfully received.
+ *  Users successfully received.
  * 
- * @param {Object} cryptos.
+ * @param {Object} users.
  * @returns {Object} action.
  */
-export const getCryptosSuccess = (cryptos) => {
+export const getUsersSuccess = (users) => {
     return {
-        type: GET_CRYPTOS_SUCCESS,
-        cryptos,
+        type: GET_USERS_SUCCESS,
+        users,
         receivedAt: Date.now()
     };
 };
 
 /**
- * Failed to get crypots.
+ * Failed to get users.
  * 
  * @param {Object} errors.
  * @returns {Object} action.
  */
-export const getCryptosFailure = (errors) => {
+export const getUsersFailure = (errors) => {
     return {
-        type: GET_CRYPTOS_FAILURE,
+        type: GET_USERS_FAILURE,
         errors,
         receivedAt: Date.now()
     };

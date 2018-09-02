@@ -11,7 +11,7 @@ import App from './App';
  */
 const mapStateToProps = (state)  => {
     return {
-        cryptos: selectors.getCryptos(state),
+        users: selectors.getUsers(state),
     };
 };
 

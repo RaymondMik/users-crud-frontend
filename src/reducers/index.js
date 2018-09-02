@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import cryptos from './cryptosReducer';
+import users from './usersReducer';
 
 const reducers = combineReducers({
-    cryptos
+    users
 });
 
 // selectors used in mapStateToProps()
-export const getCryptos = (state) => state.cryptos;
+export const getUsers = (state) => state.users;
 
 export default reducers;

@@ -3,6 +3,7 @@ import { getData } from '../services';
 import * as actions from '../actions';
 
 export function* getCryptosSaga() {
+    //https://dashboard.heroku.com/apps/warm-atoll-11335
     try {
         yield put(actions.getCryptos());
         const cryptos = yield call(getData, 'https://api.coinmarketcap.com/v2/ticker/?convert=EUR&sort=id', 'cryptos');
