@@ -2,20 +2,20 @@ import { call, put } from 'redux-saga/effects';
 import { getData } from '../services';
 import * as actions from '../actions';
 
-export function* getCryptosSaga() {
-    //https://dashboard.heroku.com/apps/warm-atoll-11335
+export function* getUsersSaga() {
     try {
-        yield put(actions.getCryptos());
-        const cryptos = yield call(getData, 'https://api.coinmarketcap.com/v2/ticker/?convert=EUR&sort=id', 'cryptos');
-        yield put(actions.getCryptosSuccess(cryptos));
+        yield put(actions.getUsers());
+        const cryptos = yield call(getData, 'https://warm-atoll-11335.herokuapp.com/users', 'users');
+        console.log(88, cryptos);
+        yield put(actions.getUsersSuccess(cryptos));
     } catch(error) {
-        yield put(actions.getCryptosFailure(error));
+        yield put(actions.getUsersFailure(error));
     }
 }
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
-    yield getCryptosSaga();
+    yield getUsersSaga();
 }
 
 export default rootSaga;

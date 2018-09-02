@@ -6,8 +6,7 @@
  * @returns {JSON} response from API.
  */
 const getData = (endpoint, type) => {
-    return fetch(
-        endpoint, {method: 'GET'}).then((response) => {
+    return fetch(endpoint).then((response) => {
         if (!response.ok) throw new Error(response.statusText);
         return response.json();
     }).catch( (err) => {
