@@ -1,6 +1,6 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import * as actionCreators from '../actions';
+import * as userActionCreators from '../actions/userActions';
 import * as selectors from '../reducers';
 import App from './App';
 
@@ -11,6 +11,7 @@ import App from './App';
  */
 const mapStateToProps = (state)  => {
     return {
+        rootData: selectors.getRoot(state),
         users: selectors.getUsers(state),
     };
 };
@@ -21,7 +22,7 @@ const mapStateToProps = (state)  => {
  * @returns {Object} action creators wrapped into a dispatch().
  */
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators(actionCreators, dispatch);
+    return bindActionCreators(userActionCreators, dispatch);
 };
 
 /**

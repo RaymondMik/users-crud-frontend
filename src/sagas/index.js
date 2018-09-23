@@ -1,21 +1,33 @@
 import { call, put } from 'redux-saga/effects';
 import { getData } from '../services';
-import * as actions from '../actions';
+import * as root from '../actions/rootActions';
 
-export function* getUsersSaga() {
+const baseURL = 'https://users-crud-api.herokuapp.com';
+
+export function* getRootSaga() {
     try {
-        yield put(actions.getUsers());
-        const cryptos = yield call(getData, 'https://warm-atoll-11335.herokuapp.com/users', 'users');
-        console.log(88, cryptos);
-        yield put(actions.getUsersSuccess(cryptos));
+        yield put(root.getRoot());
+        const data = yield call(getData, `${baseURL}`, 'root');
+        yield put(root.getRootSuccess(data));
     } catch(error) {
-        yield put(actions.getUsersFailure(error));
+        yield put(root.getRootFailure(error));
     }
 }
 
+/*export function* getUsersSaga() {
+    try {
+        yield put(actions.getUsers());
+        const users = yield call(getData, `${baseURL}/users`, 'users');
+        yield put(actions.getUsersSuccess(users));
+    } catch(error) {
+        yield put(actions.getUsersFailure(error));
+    }
+}*/
+
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
-    yield getUsersSaga();
+    yield getRootSaga();
+    //yield getUsersSaga();
 }
 
 export default rootSaga;
