@@ -1,7 +1,7 @@
 import { 
     GET_USERS,
     GET_USERS_SUCCESS,
-    GET_USERS_FAILURE  } from '../actions/userActions';
+    GET_USERS_FAILURE  } from '../actions/getUsersActions';
 
 const initialState = {
     isFetching: true,

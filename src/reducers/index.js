@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import root from './rootReducer';
-import users from './usersReducer';
+import users from './getUsersReducer';
+import userData from './logUserInReducer';
 
 const reducers = combineReducers({
     root,
-    users
+    users,
+    userData
 });
 
 // selectors used in mapStateToProps()
