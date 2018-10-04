@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { getData, postData } from '../services';
 import * as rootActions from '../actions/rootActions';
 import * as signInActions from '../actions/signUserInActions';
+import {saveUserToStorage} from '../utilities/sessionStorageHandler';
 import globalUrl from '../utilities/globalUrl';
 
 export function* getRootSaga() {
@@ -18,7 +19,7 @@ export function* signUserInSaga(signInData) {
     try {
         const {userData} = signInData;
         const user = yield call(postData, `${globalUrl}/users/login`, userData, 'signIn');
-        yield sessionStorage.setItem('user-key', user.token);
+        yield saveUserToStorage(user);
         yield put(signInActions.signUserInSuccess(user));
     } catch(error) {
         yield put(signInActions.signUserInFailure(error));

@@ -4,6 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware from 'redux-saga';
 import rootSaga from '../sagas';
 import reducers from '../reducers';
+import {getUserFromStorage} from '../utilities/sessionStorageHandler';
 
 const loggerMiddleware = createLogger();
 const sagaMiddleware = createSagaMiddleware();
@@ -17,8 +18,11 @@ if (process.env.NODE_ENV === 'development') middlewares.push(loggerMiddleware);
  * @returns {Object} Redux store.
  */
 const initStore = () => {
+	const userData = getUserFromStorage();
+	const state = {userData};
 	store = createStore(
 		reducers,
+		state,
 		composeWithDevTools(
 			applyMiddleware(...middlewares)
 		)

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, NavLink as RouterNavLink, Switch } from 'react-router-dom';
-import UsersList from './UsersList';
+import UserForm from './UserForm';
 import Settings from './Settings';
 import {
     Collapse,
@@ -8,12 +8,7 @@ import {
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem } from 'reactstrap';
+    NavItem } from 'reactstrap';
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -53,27 +48,20 @@ class NavBar extends React.Component {
                                 activeClassName='selected'
                             >Settings</RouterNavLink>
                         </NavItem>
-                        <UncontrolledDropdown nav inNavbar>
-                            <DropdownToggle nav caret>
-                                User
-                            </DropdownToggle>
-                            <DropdownMenu right>
-                                <DropdownItem>
-                                    <RouterNavLink
-                                        className="nav-link"
-                                        to={'/sign-in'} 
-                                        activeClassName='selected'
-                                    >Sign In</RouterNavLink>
-                                </DropdownItem>
-                                <DropdownItem>
-                                    <RouterNavLink
-                                        className="nav-link"
-                                        to={'/sign-up'} 
-                                        activeClassName='selected'
-                                    >Sign Up</RouterNavLink>
-                                </DropdownItem>
-                            </DropdownMenu>
-                        </UncontrolledDropdown>
+                        <NavItem>
+                            <RouterNavLink 
+                                className="nav-link"
+                                to={'/sign-in'} 
+                                activeClassName='selected'
+                            >Sign In</RouterNavLink>
+                        </NavItem>
+                        <NavItem>
+                            <RouterNavLink 
+                                className="nav-link"
+                                to={'/sign-up'} 
+                                activeClassName='selected'
+                            >Sign Up</RouterNavLink>
+                        </NavItem>
                     </Nav>
                     </Collapse>
                 </Navbar>
@@ -84,8 +72,8 @@ class NavBar extends React.Component {
                     />
                 )} />*/}
                 <Route path='/settings' component={Settings} />
-                <Route path='/sign-in' component={Settings} />
-                <Route path='/sign-up' component={Settings} />
+                <Route path='/sign-in' component={UserForm} />
+                <Route path='/sign-up' component={UserForm} />
             </ Switch>
             </div>
         );

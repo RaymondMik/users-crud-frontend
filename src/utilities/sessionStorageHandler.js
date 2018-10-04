@@ -1,0 +1,16 @@
+export const getUserFromStorage = () => {
+    const storageState = sessionStorage.getItem('user');
+    // Storage null
+    if (storageState === null) return {};
+    const parsedStorageState = JSON.parse(storageState);
+    
+    return parsedStorageState;
+};
+
+export const saveUserToStorage = (userData) => {
+    try {
+        sessionStorage.setItem('user', JSON.stringify(userData));
+    } catch (err) {
+        return {};
+    }
+};

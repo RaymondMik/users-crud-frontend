@@ -25,12 +25,12 @@ const App = (props) => {
     }
 
     const rootData = props.rootData.message;
-    props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
+    //props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
 
     return (
-        <div>
+        <div className="container-fluid">
             <NavBar />
-            <div>{rootData}</div>
+            <div className="container">{rootData}</div>
         </div>
     );
 };
