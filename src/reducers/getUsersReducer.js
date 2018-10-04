@@ -4,9 +4,9 @@ import {
     GET_USERS_FAILURE  } from '../actions/getUsersActions';
 
 const initialState = {
-    isFetching: true,
+    isFetching: false,
     errors: false,
-    items: {}
+    list: {}
 };
 
 /**
@@ -16,7 +16,7 @@ const initialState = {
  * @param {Object} action.
  * @returns {Object} a copy of the state modified according to the action dispatched.
  */
-const users = (state = initialState, action) => {
+const usersList = (state = initialState, action) => {
     switch (action.type) {
         case GET_USERS:
             return {
@@ -29,7 +29,7 @@ const users = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errors: false,
-                items: action.cryptos,
+                list: action.users,
                 receivedAt: action.receivedAt
             };
         case GET_USERS_FAILURE:
@@ -44,4 +44,4 @@ const users = (state = initialState, action) => {
     }
 };
 
-export default users;
+export default usersList;

@@ -1,27 +1,32 @@
-import { call, put } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import { getData, postData } from '../services';
-import * as root from '../actions/rootActions';
-import * as login from '../actions/logUserInActions';
+import * as rootActions from '../actions/rootActions';
+import * as signInActions from '../actions/signUserInActions';
 import globalUrl from '../utilities/globalUrl';
 
 export function* getRootSaga() {
     try {
-        yield put(root.getRoot());
+        yield put(rootActions.getRoot());
         const data = yield call(getData, `${globalUrl}`, 'root');
-        yield put(root.getRootSuccess(data));
+        yield put(rootActions.getRootSuccess(data));
     } catch(error) {
-        yield put(root.getRootFailure(error));
+        yield put(rootActions.getRootFailure(error));
     }
 }
 
-export function* logUserInSaga() {
+export function* signUserInSaga(signInData) {
     try {
-        yield put(login.logUserIn());
-        const users = yield call(postData, `${globalUrl}/users/login`, 'log user in');
-        yield put(login.logUserInSuccess(users));
+        const {userData} = signInData;
+        const user = yield call(postData, `${globalUrl}/users/login`, userData, 'signIn');
+        yield sessionStorage.setItem('user-key', user.token);
+        yield put(signInActions.signUserInSuccess(user));
     } catch(error) {
-        yield put(login.logUserInFailure(error));
+        yield put(signInActions.signUserInFailure(error));
     }
+}
+
+function* watchLogUserIn() {
+    yield takeLatest('SIGN_USER_IN', signUserInSaga); 
 }
 
 /*export function* getUsersSaga() {
@@ -36,8 +41,9 @@ export function* logUserInSaga() {
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
+    yield watchLogUserIn();
     yield getRootSaga();
-    //yield getUsersSaga();
+    
 }
 
 export default rootSaga;

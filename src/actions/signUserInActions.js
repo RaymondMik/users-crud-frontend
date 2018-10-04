@@ -1,6 +1,6 @@
-export const LOG_USER_IN = 'LOG_USER_IN';
-export const LOG_USER_IN_SUCCESS = 'LOG_USER_IN_SUCCESS';
-export const LOG_USER_IN_FAILURE = 'LOGIN_USER_IN_FAILURE';
+export const SIGN_USER_IN = 'SIGN_USER_IN';
+export const SIGN_USER_IN_SUCCESS = 'SIGN_USER_IN_SUCCESS';
+export const SIGN_USER_IN_FAILURE = 'SIGN_USER_IN_FAILURE';
 
 /**
  * Log User In.
@@ -10,10 +10,10 @@ export const LOG_USER_IN_FAILURE = 'LOGIN_USER_IN_FAILURE';
  * @param {string} loginData.password - user's password.
  * @returns {Object} action.
  */
-export const logUserIn = (loginData) => {
+export const signUserIn = (userData) => {
     return {
-        type: LOG_USER_IN,
-        loginData,
+        type: SIGN_USER_IN,
+        userData,
         sentAt: Date.now()
     };
 };
@@ -28,9 +28,9 @@ export const logUserIn = (loginData) => {
  * @param {string} userData.role - user's role.
  * @returns {Object} action.
  */
-export const logUserInSuccess = (userData) => {
+export const signUserInSuccess = (userData) => {
     return {
-        type: LOG_USER_IN_SUCCESS,
+        type: SIGN_USER_IN_SUCCESS,
         userData,
         receivedAt: Date.now()
     };
@@ -42,9 +42,9 @@ export const logUserInSuccess = (userData) => {
  * @param {Object} errors.
  * @returns {Object} action.
  */
-export const logUserInFailure = (errors) => {
+export const signUserInFailure = (errors) => {
     return {
-        type: LOG_USER_IN_FAILURE,
+        type: SIGN_USER_IN_FAILURE,
         errors,
         receivedAt: Date.now()
     };

@@ -24,8 +24,9 @@ const App = (props) => {
         throw new Error('Something went wrong while fetching API data!');
     }
 
-    const rootData = props.rootData.data.message;
-    
+    const rootData = props.rootData.message;
+    props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
+
     return (
         <div>
             <NavBar />
@@ -35,7 +36,8 @@ const App = (props) => {
 };
 
 App.propTypes = {
-    rootData: PropTypes.object
+    rootData: PropTypes.object,
+    signUserIn: PropTypes.func
 };
 
 export default hot(module)(App);

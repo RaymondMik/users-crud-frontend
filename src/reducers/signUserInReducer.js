@@ -1,12 +1,13 @@
 import { 
-    LOG_USER_IN,
-    LOG_USER_IN_SUCCESS,
-    LOG_USER_IN_FAILURE  } from '../actions/logUserInActions';
+    SIGN_USER_IN,
+    SIGN_USER_IN_SUCCESS,
+    SIGN_USER_IN_FAILURE  } from '../actions/signUserInActions';
 
 const initialState = {
-    isFetching: true,
+    isFetching: false,
     errors: false,
-    userData: {}
+    isSignedIn: false,
+    data: {}
 };
 
 /**
@@ -18,25 +19,28 @@ const initialState = {
  */
 const userData = (state = initialState, action) => {
     switch (action.type) {
-        case LOG_USER_IN:
+        case SIGN_USER_IN:
             return {
                 ...state,
                 isFetching: true,
-                errors: false
+                errors: false,
+                isSignedIn: false
             };
-        case LOG_USER_IN_SUCCESS:
+        case SIGN_USER_IN_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 errors: false,
-                userData: action.userData,
-                receivedAt: action.receivedAt
+                isSignedIn: true,
+                receivedAt: action.receivedAt,
+                ...action.userData
             };
-        case LOG_USER_IN_FAILURE:
+        case SIGN_USER_IN_FAILURE:
             return {
                 ...state,
                 isFetching: false,
                 errors: action.errors,
+                isSignedIn: false,
                 receivedAt: action.receivedAt
             };
         default:
