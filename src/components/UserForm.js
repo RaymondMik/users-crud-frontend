@@ -5,7 +5,7 @@ class UserForm extends React.Component {
   render() {
     return (
       <div className="container">
-        <Form>
+        <Form className="user-app-form">
           <FormGroup>
             <Label for="exampleEmail">Email</Label>
             <Input type="email" name="email" id="exampleEmail" />

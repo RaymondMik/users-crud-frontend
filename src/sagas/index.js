@@ -42,9 +42,8 @@ function* watchLogUserIn() {
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
-    yield watchLogUserIn();
     yield getRootSaga();
-    
+    yield watchLogUserIn();
 }
 
 export default rootSaga;

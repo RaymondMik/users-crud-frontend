@@ -6,27 +6,11 @@ body {
     font-family: $text-regular;
 }
 
-p {
-    font-size: 1.4em;
+.container {
+    margin-top: 4em;
 }
 
-header {
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 1em;
-    a {
-        font-size: 1.6em;
-        font-weight: bold;
-        margin-right: 1em;
-    }
-}
-
-.selected {
-    color: blue;
-}
-
-table {
-    width: 100%;
-    text-align: left;
-    font-size: 1.5em;
+form.user-app-form {
+    width: 60%;
+    margin: 0 auto;
 }

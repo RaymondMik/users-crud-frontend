@@ -24,13 +24,14 @@ const App = (props) => {
         throw new Error('Something went wrong while fetching API data!');
     }
 
-    const rootData = props.rootData.message;
-    //props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
+    const rootData = props.rootData.data.message;
+    props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
 
     return (
         <div className="container-fluid">
-            <NavBar />
-            <div className="container">{rootData}</div>
+            <NavBar 
+                rootData={rootData}
+            />
         </div>
     );
 };

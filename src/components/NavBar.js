@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, NavLink as RouterNavLink, Switch } from 'react-router-dom';
+import HomePage from './HomePage';
 import UserForm from './UserForm';
 import Settings from './Settings';
 import {
@@ -66,11 +67,11 @@ class NavBar extends React.Component {
                     </Collapse>
                 </Navbar>
                 <Switch>
-                {/*<Route path='/' exact render={(props) => (
-                    <UsersList {...props}
-                        users={{}}
-                    />
-                )} />*/}
+                <Route path='/' exact render={(props) => {
+                    return (<HomePage {...props}
+                        rootData={this.props.rootData}
+                    />);
+                }} />
                 <Route path='/settings' component={Settings} />
                 <Route path='/sign-in' component={UserForm} />
                 <Route path='/sign-up' component={UserForm} />
