@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, NavLink as RouterNavLink, Switch } from 'react-router-dom';
 import HomePage from './HomePage';
 import UserForm from './UserForm';
-import Settings from './Settings';
+import SignOut from './SignOut';
 import {
     Collapse,
     Navbar,
@@ -10,6 +10,7 @@ import {
     NavbarBrand,
     Nav,
     NavItem } from 'reactstrap';
+import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
     constructor(props) {
@@ -28,6 +29,7 @@ class NavBar extends React.Component {
     }
 
     render() {
+        const {isSignedIn} = this.props.userData;
         return (
             <div>
                 <Navbar color="light" light expand="md">
@@ -42,43 +44,59 @@ class NavBar extends React.Component {
                                 activeClassName='selected'
                             >Home</RouterNavLink>
                         </NavItem>
-                        <NavItem>
-                            <RouterNavLink 
-                                className="nav-link"
-                                to={'/settings'} 
-                                activeClassName='selected'
-                            >Settings</RouterNavLink>
-                        </NavItem>
-                        <NavItem>
-                            <RouterNavLink 
-                                className="nav-link"
-                                to={'/sign-in'} 
-                                activeClassName='selected'
-                            >Sign In</RouterNavLink>
-                        </NavItem>
-                        <NavItem>
-                            <RouterNavLink 
-                                className="nav-link"
-                                to={'/sign-up'} 
-                                activeClassName='selected'
-                            >Sign Up</RouterNavLink>
-                        </NavItem>
+                        {isSignedIn && 
+                            <NavItem>
+                                <RouterNavLink 
+                                    className="nav-link"
+                                    to={'/sign-out'} 
+                                    activeClassName='selected'
+                                >Sign Out</RouterNavLink>
+                            </NavItem>}
+                        {!isSignedIn &&
+                            <React.Fragment>
+                                <NavItem>
+                                    <RouterNavLink 
+                                        className="nav-link"
+                                        to={'/sign-in'} 
+                                        activeClassName='selected'
+                                    >Sign In</RouterNavLink>
+                                </NavItem>
+                                <NavItem>
+                                    <RouterNavLink 
+                                        className="nav-link"
+                                        to={'/sign-up'} 
+                                        activeClassName='selected'
+                                    >Sign Up</RouterNavLink>
+                                </NavItem>
+                            </React.Fragment>}
                     </Nav>
                     </Collapse>
                 </Navbar>
                 <Switch>
-                <Route path='/' exact render={(props) => {
-                    return (<HomePage {...props}
+                <Route path='/' exact render={(props) => (
+                    <HomePage {...props}
                         rootData={this.props.rootData}
-                    />);
-                }} />
-                <Route path='/settings' component={Settings} />
-                <Route path='/sign-in' component={UserForm} />
+                    />)
+                }/>
+                <Route path='/sign-in' exact render={(props) => (
+                    <UserForm {...props}
+                        userData={this.props.userData}
+                        signUserIn={this.props.signUserIn}
+                    />
+                )
+                }/>
                 <Route path='/sign-up' component={UserForm} />
+                <Route path='/sign-out' component={SignOut} />
             </ Switch>
             </div>
         );
     }
 }
+
+NavBar.propTypes = {
+    rootData: PropTypes.object,
+    userData: PropTypes.object,
+    signUserIn: PropTypes.func
+};
 
 export default NavBar;

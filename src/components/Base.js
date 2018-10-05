@@ -13,6 +13,7 @@ import App from './App';
 const mapStateToProps = (state)  => {
     return {
         rootData: selectors.getRoot(state),
+        userData: selectors.getUserData(state),
         usersList: selectors.getUsers(state),
     };
 };

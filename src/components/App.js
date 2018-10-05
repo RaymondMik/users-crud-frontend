@@ -10,27 +10,12 @@ import '../assets/styles/app.scss';
  * Application component
  */
 const App = (props) => {
-    // Render Loader
-    if (props.rootData.isFetching) {
-        return (
-            <div>
-                <h3>...Loading</h3>
-            </div>
-        );
-    }
-
-    // Render ErrorBoundary via componentDidCatch()
-    if (props.rootData.errors) {
-        throw new Error('Something went wrong while fetching API data!');
-    }
-
-    const rootData = props.rootData.data.message;
-    props.signUserIn({email:'ramon.miklus@gmail.com', password:'babbamia'});
-
     return (
         <div className="container-fluid">
             <NavBar 
-                rootData={rootData}
+                rootData={props.rootData}
+                userData={props.userData}
+                signUserIn={props.signUserIn}
             />
         </div>
     );
@@ -38,6 +23,7 @@ const App = (props) => {
 
 App.propTypes = {
     rootData: PropTypes.object,
+    userData: PropTypes.object,
     signUserIn: PropTypes.func
 };
 

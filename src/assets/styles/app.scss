@@ -14,3 +14,10 @@ form.user-app-form {
     width: 60%;
     margin: 0 auto;
 }
+
+.sign-in-alert {
+    margin-top: 1em;
+    &.hide{
+        display: none;
+    }
+}

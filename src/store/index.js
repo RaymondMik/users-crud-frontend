@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'development') middlewares.push(loggerMiddleware);
  */
 const initStore = () => {
 	const userData = getUserFromStorage();
-	const state = {userData};
+	const state = userData ? {userData} : {};
 	store = createStore(
 		reducers,
 		state,

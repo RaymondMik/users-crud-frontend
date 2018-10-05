@@ -7,7 +7,7 @@ const initialState = {
     isFetching: false,
     errors: false,
     isSignedIn: false,
-    data: {}
+    responseReceived: false
 };
 
 /**
@@ -24,7 +24,8 @@ const userData = (state = initialState, action) => {
                 ...state,
                 isFetching: true,
                 errors: false,
-                isSignedIn: false
+                isSignedIn: false,
+                responseReceived: false
             };
         case SIGN_USER_IN_SUCCESS:
             return {
@@ -32,6 +33,7 @@ const userData = (state = initialState, action) => {
                 isFetching: false,
                 errors: false,
                 isSignedIn: true,
+                responseReceived: true,
                 receivedAt: action.receivedAt,
                 ...action.userData
             };
@@ -41,6 +43,7 @@ const userData = (state = initialState, action) => {
                 isFetching: false,
                 errors: action.errors,
                 isSignedIn: false,
+                responseReceived: true,
                 receivedAt: action.receivedAt
             };
         default:

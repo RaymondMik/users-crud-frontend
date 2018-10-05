@@ -19,6 +19,8 @@ export function* signUserInSaga(signInData) {
     try {
         const {userData} = signInData;
         const user = yield call(postData, `${globalUrl}/users/login`, userData, 'signIn');
+        yield user.isSignedIn = true;
+        yield user.responseReceived = true;
         yield saveUserToStorage(user);
         yield put(signInActions.signUserInSuccess(user));
     } catch(error) {
