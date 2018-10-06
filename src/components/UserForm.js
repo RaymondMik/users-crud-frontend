@@ -18,7 +18,10 @@ class UserForm extends React.Component {
 
   componentDidUpdate() {
     const {responseReceived, isSignedIn} = this.props.userData;
-    if (responseReceived && isSignedIn) setTimeout(() => this.props.history.push('/'), 2000);
+    if (responseReceived && isSignedIn) setTimeout(() => {
+      this.props.history.push('/');
+      this.props.resetSignUserState();
+    }, 2000);
   }
 
   handleFormOnChange(e) {
@@ -40,7 +43,7 @@ class UserForm extends React.Component {
     const {responseReceived, isSignedIn} = this.props.userData;
     const displayAlertClass = !responseReceived ? 'hide' : '';
     const alertColor = isSignedIn ? 'success' : 'danger';
-    const alertMessage = isSignedIn ? 'You successfully logged in!' : 'There was an error!';
+    const alertMessage = isSignedIn ? 'You successfully logged in! Redirecting to home...' : 'There was an error!';
 
     return (
       <div className="container">
@@ -66,7 +69,8 @@ class UserForm extends React.Component {
 UserForm.propTypes = {
   userData: PropTypes.object,
   history: PropTypes.any,
-  signUserIn: PropTypes.func
+  signUserIn: PropTypes.func,
+  resetSignUserState: PropTypes.func
 };
 
 export default UserForm;

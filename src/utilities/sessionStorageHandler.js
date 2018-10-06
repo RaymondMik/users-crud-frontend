@@ -14,3 +14,11 @@ export const saveUserToStorage = (userData) => {
         return {};
     }
 };
+
+export const deleteUserFromStorage = () => {
+    try {
+        sessionStorage.removeItem('user');
+    } catch (err) {
+        return {};
+    }
+};

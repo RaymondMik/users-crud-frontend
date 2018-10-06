@@ -2,55 +2,53 @@ import React from 'react';
 import { Route, NavLink as RouterNavLink, Switch } from 'react-router-dom';
 import HomePage from './HomePage';
 import UserForm from './UserForm';
-import SignOut from './SignOut';
 import {
     Collapse,
     Navbar,
     NavbarToggler,
     NavbarBrand,
     Nav,
-    NavItem } from 'reactstrap';
+    NavItem,
+    NavLink } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
 
-        this.toggle = this.toggle.bind(this);
         this.state = {
             isOpen: false
         };
     }
 
-    toggle() {
+    handleNavBarToggle() {
         this.setState({
             isOpen: !this.state.isOpen
         });
     }
 
     render() {
-        const {isSignedIn} = this.props.userData;
+        const {isSignedIn, _id, token} = this.props.userData;
         return (
-            <div>
+            <div className="container-fluid">
                 <Navbar color="light" light expand="md">
                     <NavbarBrand href="/">User Manager</NavbarBrand>
-                    <NavbarToggler onClick={this.toggle} />
+                    <NavbarToggler onClick={this.handleNavBarToggle.bind(this)} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <RouterNavLink 
                                 className="nav-link"
                                 to={'/'} 
-                                activeClassName='selected'
+                                activeClassName="selected"
                             >Home</RouterNavLink>
                         </NavItem>
                         {isSignedIn && 
                             <NavItem>
-                                <RouterNavLink 
+                                <NavLink 
                                     className="nav-link"
-                                    to={'/sign-out'} 
-                                    activeClassName='selected'
-                                >Sign Out</RouterNavLink>
+                                    onClick={() => this.props.signUserOut(_id, token)}
+                                >Sign Out</NavLink>
                             </NavItem>}
                         {!isSignedIn &&
                             <React.Fragment>
@@ -58,14 +56,14 @@ class NavBar extends React.Component {
                                     <RouterNavLink 
                                         className="nav-link"
                                         to={'/sign-in'} 
-                                        activeClassName='selected'
+                                        activeClassName="selected"
                                     >Sign In</RouterNavLink>
                                 </NavItem>
                                 <NavItem>
                                     <RouterNavLink 
                                         className="nav-link"
                                         to={'/sign-up'} 
-                                        activeClassName='selected'
+                                        activeClassName="selected"
                                     >Sign Up</RouterNavLink>
                                 </NavItem>
                             </React.Fragment>}
@@ -76,17 +74,18 @@ class NavBar extends React.Component {
                 <Route path='/' exact render={(props) => (
                     <HomePage {...props}
                         rootData={this.props.rootData}
+                        userData={this.props.userData}
                     />)
                 }/>
                 <Route path='/sign-in' exact render={(props) => (
                     <UserForm {...props}
                         userData={this.props.userData}
                         signUserIn={this.props.signUserIn}
+                        resetSignUserState={this.props.resetSignUserState}
                     />
                 )
                 }/>
                 <Route path='/sign-up' component={UserForm} />
-                <Route path='/sign-out' component={SignOut} />
             </ Switch>
             </div>
         );
@@ -96,7 +95,9 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
-    signUserIn: PropTypes.func
+    signUserIn: PropTypes.func,
+    signUserOut: PropTypes.func,
+    resetSignUserState: PropTypes.func
 };
 
 export default NavBar;

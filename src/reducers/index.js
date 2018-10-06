@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import rootData from './rootReducer';
 import usersList from './getUsersReducer';
-import userData from './signUserInReducer';
+import userData from './signUserReducer';
 
 const reducers = combineReducers({
     rootData,

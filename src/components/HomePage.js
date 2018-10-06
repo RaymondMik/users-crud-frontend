@@ -19,35 +19,65 @@ const HomePage = (props) => {
     }
 
     const message = props.rootData.data.message;
+    const {isSignedIn, userName, role} = props.userData;
+    
     return (
         <div className="container">
             <Jumbotron>
-                <h1 className="display-3">{message}</h1>
-                <p className="lead">Login and manage your customers database with the User Manager application.</p>
-                <hr className="my-2" />
-                <p>Just some additional text to show how cool Jumbotrons are.</p>
-                <NavLink 
-                    className="btn btn-primary"
-                    to={'/sign-in'} 
-                    activeClassName='selected'
-                >
-                    Sign In
-                </NavLink>
-                <span><b> or </b></span>
-                <NavLink 
-                    className="btn btn-primary"
-                    to={'/sign-up'} 
-                    activeClassName='selected'
-                >
-                    Sign Up
-                </NavLink>
+                {!isSignedIn ? 
+                    <React.Fragment>
+                        <h1 className="display-3">{message}</h1>
+                        <p className="lead">Login and manage your customers database with the User Manager application.</p>
+                        <hr className="my-2" />
+                        <p>Just some additional text to show how cool Jumbotrons are.</p>
+                        <NavLink 
+                            className="btn btn-primary"
+                            to={'/sign-in'} 
+                            activeClassName='selected'
+                        >
+                            Sign In
+                        </NavLink>
+                        <span><b> or </b></span>
+                        <NavLink 
+                            className="btn btn-primary"
+                            to={'/sign-up'} 
+                            activeClassName='selected'
+                        >
+                            Sign Up
+                        </NavLink>
+                    </React.Fragment> :
+                    <React.Fragment>
+                        <h1 className="display-3">Welcome {userName}!</h1>
+                        <p className="lead">{role === 'admin' ? 'You can manage your users here.' : 'You can see and edit you profile here.'}</p>
+                        <hr className="my-2" />
+                        <NavLink 
+                            className="btn btn-primary"
+                            to={'/sign-in'} 
+                            activeClassName='selected'
+                        >
+                            See your profile
+                        </NavLink>
+                        {role === 'admin' && 
+                            <React.Fragment>
+                                <span><b> or </b></span>
+                                <NavLink 
+                                    className="btn btn-primary"
+                                    to={'/user-list'} 
+                                    activeClassName='selected'
+                                >
+                                    See user list
+                                </NavLink>
+                            </React.Fragment>
+                        }
+                    </React.Fragment>}
         </Jumbotron>
         </div>
     );
 };
 
 HomePage.propTypes = {
-    rootData: PropTypes.object
+    rootData: PropTypes.object,
+    userData: PropTypes.object
 };
 
 export default HomePage;

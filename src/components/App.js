@@ -11,20 +11,24 @@ import '../assets/styles/app.scss';
  */
 const App = (props) => {
     return (
-        <div className="container-fluid">
+        <React.Fragment>
             <NavBar 
                 rootData={props.rootData}
                 userData={props.userData}
                 signUserIn={props.signUserIn}
+                signUserOut={props.signUserOut}
+                resetSignUserState={props.resetSignUserState}
             />
-        </div>
+        </React.Fragment>
     );
 };
 
 App.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
-    signUserIn: PropTypes.func
+    signUserIn: PropTypes.func,
+    signUserOut: PropTypes.func,
+    resetSignUserState: PropTypes.func
 };
 
 export default hot(module)(App);

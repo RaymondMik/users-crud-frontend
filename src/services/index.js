@@ -23,9 +23,17 @@ const getData = (endpoint, type) => {
  * @returns {JSON} response from API.
  */
 const postData = async(endpoint, payload, type) => {
-    let body = {};
+    const requestParams = {
+        method: 'POST',
+        body: {},
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    };
+  
     if (type === 'signUp') {
-        body = JSON.stringify({
+        requestParams.body = JSON.stringify({
             userName: payload.userName, 
             email: payload.email, 
             password: payload.password,
@@ -33,29 +41,35 @@ const postData = async(endpoint, payload, type) => {
         });
     }
     if (type === 'signIn') {
-        body = JSON.stringify({
+        requestParams.body = JSON.stringify({
             email: payload.email, 
             password: payload.password
         });
+    }
+    if (type === 'signOut') {
+        const xAuth = payload;
+        requestParams.headers['x-auth'] = xAuth;
+        delete requestParams.body;
     }
 
     try {
         const response = await fetch(
             endpoint, 
-            {
-                method: 'POST',
-                body,
-                mode: 'cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
+            requestParams
         );
+        
         if (!response.ok) throw new Error(response.statusText);
-        const token = response.headers.get('x-auth');
-        const userData = await response.json();
-       
-        return {token, ...userData};
+
+        if (type === 'signOut') {
+            const responseData = await response.json();
+ 
+            return responseData;
+        } else {
+            const token = response.headers.get('x-auth');
+            const userData = await response.json();
+           
+            return {token, ...userData};
+        }
     } catch(e) {
         throw new Error(`There was the following problem: ${e} while posting ${endpoint}`);
     }

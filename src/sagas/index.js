@@ -1,8 +1,9 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
+import {fork} from 'redux-saga/effects';
 import { getData, postData } from '../services';
 import * as rootActions from '../actions/rootActions';
-import * as signInActions from '../actions/signUserInActions';
-import {saveUserToStorage} from '../utilities/sessionStorageHandler';
+import * as signUserActions from '../actions/signUserActions';
+import {saveUserToStorage, deleteUserFromStorage} from '../utilities/sessionStorageHandler';
 import globalUrl from '../utilities/globalUrl';
 
 export function* getRootSaga() {
@@ -22,14 +23,29 @@ export function* signUserInSaga(signInData) {
         yield user.isSignedIn = true;
         yield user.responseReceived = true;
         yield saveUserToStorage(user);
-        yield put(signInActions.signUserInSuccess(user));
+        yield put(signUserActions.signUserInSuccess(user));
     } catch(error) {
-        yield put(signInActions.signUserInFailure(error));
+        yield put(signUserActions.signUserInFailure(error));
     }
 }
 
-function* watchLogUserIn() {
-    yield takeLatest('SIGN_USER_IN', signUserInSaga); 
+export function* signUserOutSaga(signOutData) {
+    try {
+        yield call(postData, `${globalUrl}/users/sign-out/${signOutData._id}`, signOutData.token, 'signOut');
+        yield deleteUserFromStorage();
+        yield put(signUserActions.signUserOutSuccess());
+        yield put(signUserActions.resetSignUserState());
+    } catch(error) {
+        yield put(signUserActions.signUserOutFailure(error));
+    }
+}
+
+function* watchSignUserIn() {
+    yield takeLatest(signUserActions.SIGN_USER_IN, signUserInSaga); 
+}
+
+function* watchSignUserOut() {
+    yield takeLatest(signUserActions.SIGN_USER_OUT, signUserOutSaga); 
 }
 
 /*export function* getUsersSaga() {
@@ -44,8 +60,9 @@ function* watchLogUserIn() {
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
-    yield getRootSaga();
-    yield watchLogUserIn();
+    yield fork(getRootSaga);
+    yield fork(watchSignUserIn);
+    yield fork(watchSignUserOut);
 }
 
 export default rootSaga;
