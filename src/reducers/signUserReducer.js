@@ -2,6 +2,9 @@ import {
     SIGN_USER_IN,
     SIGN_USER_IN_SUCCESS,
     SIGN_USER_IN_FAILURE,
+    SIGN_USER_UP,
+    SIGN_USER_UP_SUCCESS,
+    SIGN_USER_UP_FAILURE,
     SIGN_USER_OUT,
     SIGN_USER_OUT_SUCCESS,
     SIGN_USER_OUT_FAILURE,
@@ -12,7 +15,7 @@ const initialState = {
     isFetching: false,
     errors: false,
     isSignedIn: false,
-    responseReceived: false,
+    responseReceived: null,
     _id: null,
     token: null,
     username: null,
@@ -35,7 +38,7 @@ const userData = (state = initialState, action) => {
                 isFetching: true,
                 errors: false,
                 isSignedIn: false,
-                responseReceived: false
+                responseReceived: null
             };
         case SIGN_USER_IN_SUCCESS:
             return {
@@ -43,7 +46,7 @@ const userData = (state = initialState, action) => {
                 isFetching: false,
                 errors: false,
                 isSignedIn: true,
-                responseReceived: true,
+                responseReceived: 'success',
                 receivedAt: action.receivedAt,
                 ...action.userData
             };
@@ -53,7 +56,31 @@ const userData = (state = initialState, action) => {
                 isFetching: false,
                 errors: action.errors,
                 isSignedIn: false,
-                responseReceived: true,
+                responseReceived: 'failure',
+                receivedAt: action.receivedAt
+            };
+        case SIGN_USER_UP:
+            return {
+                ...state,
+                isFetching: true,
+                errors: false,
+                responseReceived: null
+            };
+        case SIGN_USER_UP_SUCCESS:
+            return {
+                ...state,
+                isFetching: false,
+                errors: false,
+                responseReceived: 'success',
+                receivedAt: action.receivedAt,
+                ...action.userData
+            };
+        case SIGN_USER_UP_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                errors: action.errors,
+                responseReceived: 'failure',
                 receivedAt: action.receivedAt
             };
         case SIGN_USER_OUT:
@@ -61,7 +88,7 @@ const userData = (state = initialState, action) => {
                 ...state,
                 isFetching: true,
                 errors: false,
-                responseReceived: false
+                responseReceived: null
             };
         case SIGN_USER_OUT_SUCCESS:
             return {
@@ -69,7 +96,7 @@ const userData = (state = initialState, action) => {
                 isFetching: false,
                 errors: false,
                 isSignedIn: false,
-                responseReceived: true,
+                responseReceived: 'success',
                 _id: null,
                 token: null,
                 userName: null,
@@ -81,14 +108,14 @@ const userData = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errors: action.errors,
-                responseReceived: true
+                responseReceived: 'failure'
             };
         case RESET_SIGN_USER_STATE:
             return {
                 ...state,
                 isFetching: false,
                 errors: false,
-                responseReceived: false
+                responseReceived: null
             };
         default:
             return state;

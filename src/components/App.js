@@ -16,6 +16,7 @@ const App = (props) => {
                 rootData={props.rootData}
                 userData={props.userData}
                 signUserIn={props.signUserIn}
+                signUserUp={props.signUserUp}
                 signUserOut={props.signUserOut}
                 resetSignUserState={props.resetSignUserState}
             />
@@ -27,6 +28,7 @@ App.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
     signUserIn: PropTypes.func,
+    signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,
     resetSignUserState: PropTypes.func
 };

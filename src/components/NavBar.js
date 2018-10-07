@@ -2,6 +2,8 @@ import React from 'react';
 import { Route, NavLink as RouterNavLink, Switch } from 'react-router-dom';
 import HomePage from './HomePage';
 import UserForm from './UserForm';
+import UserPage from './UserPage';
+import UserList from './UserList';
 import {
     Collapse,
     Navbar,
@@ -71,22 +73,27 @@ class NavBar extends React.Component {
                     </Collapse>
                 </Navbar>
                 <Switch>
-                <Route path='/' exact render={(props) => (
-                    <HomePage {...props}
-                        rootData={this.props.rootData}
-                        userData={this.props.userData}
-                    />)
-                }/>
-                <Route path='/sign-in' exact render={(props) => (
-                    <UserForm {...props}
-                        userData={this.props.userData}
-                        signUserIn={this.props.signUserIn}
-                        resetSignUserState={this.props.resetSignUserState}
-                    />
-                )
-                }/>
-                <Route path='/sign-up' component={UserForm} />
-            </ Switch>
+                    <Route path='/' exact render={(props) => (
+                        <HomePage {...props}
+                            rootData={this.props.rootData}
+                            userData={this.props.userData}
+                        />)}/>
+                    <Route path='/sign-in' exact render={(props) => (
+                        <UserForm {...props}
+                            userData={this.props.userData}
+                            signUserIn={this.props.signUserIn}
+                            resetSignUserState={this.props.resetSignUserState}
+                        />)}/>
+                    <Route path='/sign-up' exact render={(props) => (
+                        <UserForm {...props}
+                            userData={this.props.userData}
+                            signUserIn={this.props.signUserIn}
+                            signUserUp={this.props.signUserUp}
+                            resetSignUserState={this.props.resetSignUserState}
+                    />)}/>
+                    <Route path='/user-page' component={UserPage} />
+                    <Route path='/user-list' component={UserList} />
+                </ Switch>
             </div>
         );
     }
@@ -96,6 +103,7 @@ NavBar.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
     signUserIn: PropTypes.func,
+    signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,
     resetSignUserState: PropTypes.func
 };

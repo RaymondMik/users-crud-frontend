@@ -26,7 +26,7 @@ const HomePage = (props) => {
             <Jumbotron>
                 {!isSignedIn ? 
                     <React.Fragment>
-                        <h1 className="display-3">{message}</h1>
+                        <h2 className="display-3">{message}</h2>
                         <p className="lead">Login and manage your customers database with the User Manager application.</p>
                         <hr className="my-2" />
                         <p>Just some additional text to show how cool Jumbotrons are.</p>
@@ -43,7 +43,7 @@ const HomePage = (props) => {
                             to={'/sign-up'} 
                             activeClassName='selected'
                         >
-                            Sign Up
+                            Create a new profile
                         </NavLink>
                     </React.Fragment> :
                     <React.Fragment>
@@ -52,10 +52,10 @@ const HomePage = (props) => {
                         <hr className="my-2" />
                         <NavLink 
                             className="btn btn-primary"
-                            to={'/sign-in'} 
+                            to={'/user-page'}
                             activeClassName='selected'
                         >
-                            See your profile
+                            Manage your profile
                         </NavLink>
                         {role === 'admin' && 
                             <React.Fragment>
@@ -65,7 +65,7 @@ const HomePage = (props) => {
                                     to={'/user-list'} 
                                     activeClassName='selected'
                                 >
-                                    See user list
+                                    Manage user list
                                 </NavLink>
                             </React.Fragment>
                         }

@@ -37,7 +37,7 @@ const postData = async(endpoint, payload, type) => {
             userName: payload.userName, 
             email: payload.email, 
             password: payload.password,
-            role: payload.role
+            role: 'user'
         });
     }
     if (type === 'signIn') {
@@ -60,7 +60,7 @@ const postData = async(endpoint, payload, type) => {
         
         if (!response.ok) throw new Error(response.statusText);
 
-        if (type === 'signOut') {
+        if (type === 'signOut' || type === 'signUp') {
             const responseData = await response.json();
  
             return responseData;

@@ -19,13 +19,23 @@ export function* getRootSaga() {
 export function* signUserInSaga(signInData) {
     try {
         const {userData} = signInData;
-        const user = yield call(postData, `${globalUrl}/users/login`, userData, 'signIn');
+        const user = yield call(postData, `${globalUrl}/users/sign-in`, userData, 'signIn');
         yield user.isSignedIn = true;
         yield user.responseReceived = true;
         yield saveUserToStorage(user);
         yield put(signUserActions.signUserInSuccess(user));
     } catch(error) {
         yield put(signUserActions.signUserInFailure(error));
+    }
+}
+
+export function* signUserUpSaga(signUpData) {
+    try {
+        const {userData} = signUpData;
+        yield call(postData, `${globalUrl}/users/sign-up`, userData, 'signUp');
+        yield put(signUserActions.signUserUpSuccess());
+    } catch(error) {
+        yield put(signUserActions.signUserUpFailure(error));
     }
 }
 
@@ -42,6 +52,10 @@ export function* signUserOutSaga(signOutData) {
 
 function* watchSignUserIn() {
     yield takeLatest(signUserActions.SIGN_USER_IN, signUserInSaga); 
+}
+
+function* watchSignUserUp() {
+    yield takeLatest(signUserActions.SIGN_USER_UP, signUserUpSaga); 
 }
 
 function* watchSignUserOut() {
@@ -62,6 +76,7 @@ function* watchSignUserOut() {
 function* rootSaga() {
     yield fork(getRootSaga);
     yield fork(watchSignUserIn);
+    yield fork(watchSignUserUp);
     yield fork(watchSignUserOut);
 }
 

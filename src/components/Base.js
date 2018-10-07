@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {getUsers} from '../actions/getUsersActions';
-import {signUserIn, signUserOut, resetSignUserState} from '../actions/signUserActions';
+import {signUserIn, signUserUp, signUserOut, resetSignUserState} from '../actions/signUserActions';
 import * as selectors from '../reducers';
 import App from './App';
 
@@ -24,7 +24,7 @@ const mapStateToProps = (state)  => {
  * @returns {Object} action creators wrapped into a dispatch().
  */
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({getUsers, signUserIn, signUserOut, resetSignUserState}, dispatch);
+    return bindActionCreators({getUsers, signUserIn, signUserUp, signUserOut, resetSignUserState}, dispatch);
 };
 
 /**
