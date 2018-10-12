@@ -3,6 +3,7 @@ import {fork} from 'redux-saga/effects';
 import { getData, postData } from '../services';
 import * as rootActions from '../actions/rootActions';
 import * as signUserActions from '../actions/signUserActions';
+import * as getUsersActions from '../actions/getUsersActions';
 import {saveUserToStorage, deleteUserFromStorage} from '../utilities/sessionStorageHandler';
 import globalUrl from '../utilities/globalUrl';
 
@@ -48,6 +49,16 @@ export function* signUserOutSaga(signOutData) {
     }
 }
 
+export function* getUsersList(token) {
+    try {
+        yield call(getData, `${globalUrl}/users`, token, 'users');
+        yield put(getUsersActions.getUsers());
+        yield put(getUsersActions.getUsersSuccess());
+    } catch(error) {
+        yield put(getUsersActions.getUsersFailure(error));
+    }
+}
+
 function* watchSignUserIn() {
     yield takeLatest(signUserActions.SIGN_USER_IN, signUserInSaga); 
 }
@@ -60,15 +71,9 @@ function* watchSignUserOut() {
     yield takeLatest(signUserActions.SIGN_USER_OUT, signUserOutSaga); 
 }
 
-/*export function* getUsersSaga() {
-    try {
-        yield put(actions.getUsers());
-        const users = yield call(getData, `${baseURL}/users`, 'users');
-        yield put(actions.getUsersSuccess(users));
-    } catch(error) {
-        yield put(actions.getUsersFailure(error));
-    }
-}*/
+function* watchGetUsersList() {
+    yield takeLatest(getUsersActions.GET_USERS, getUsersList); 
+}
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
@@ -76,6 +81,7 @@ function* rootSaga() {
     yield fork(watchSignUserIn);
     yield fork(watchSignUserUp);
     yield fork(watchSignUserOut);
+    yield fork(watchGetUsersList);
 }
 
 export default rootSaga;

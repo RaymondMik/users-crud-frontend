@@ -92,7 +92,12 @@ class NavBar extends React.Component {
                             resetSignUserState={this.props.resetSignUserState}
                     />)}/>
                     <Route path='/user-page' component={UserPage} />
-                    <Route path='/user-list' component={UserList} />
+                    <Route path='/user-list' exact render={(props) => (
+                        <UserList {...props}
+                            userData={this.props.userData}
+                            getUsers={this.props.getUsers}
+                        />
+                    )}/>
                 </ Switch>
             </div>
         );
@@ -105,7 +110,8 @@ NavBar.propTypes = {
     signUserIn: PropTypes.func,
     signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,
-    resetSignUserState: PropTypes.func
+    resetSignUserState: PropTypes.func,
+    getUsers: PropTypes.func
 };
 
 export default NavBar;

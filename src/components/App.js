@@ -19,6 +19,7 @@ const App = (props) => {
                 signUserUp={props.signUserUp}
                 signUserOut={props.signUserOut}
                 resetSignUserState={props.resetSignUserState}
+                getUsers={props.getUsers}
             />
         </React.Fragment>
     );
@@ -30,7 +31,8 @@ App.propTypes = {
     signUserIn: PropTypes.func,
     signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,
-    resetSignUserState: PropTypes.func
+    resetSignUserState: PropTypes.func,
+    getUsers: PropTypes.func
 };
 
 export default hot(module)(App);

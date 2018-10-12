@@ -5,13 +5,27 @@
  * @param {string} dataType.
  * @returns {JSON} response from API.
  */
-const getData = (endpoint, type) => {
-    return fetch(endpoint).then((response) => {
+const getData = async(endpoint, payload, type) => {
+    const requestParams = {
+        method: 'GET',
+        mode: 'cors',
+        headers: {}
+    };
+
+    if (type === 'users') requestParams.headers['x-auth'] = payload;
+
+    try {
+        const response = await fetch(
+            endpoint, 
+            requestParams
+        );
+
         if (!response.ok) throw new Error(response.statusText);
+
         return response.json();
-    }).catch( (err) => {
-        throw new Error(`There was the following problem: ${err} while fetching ${type}`);
-    });
+    } catch(e) {
+        throw new Error(`There was the following problem: ${e} while fetching ${type}`);
+    }
 };
 
 /**
