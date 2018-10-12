@@ -19,12 +19,12 @@ const HomePage = (props) => {
     }
 
     const message = props.rootData.data.message;
-    const {isSignedIn, userName, role} = props.userData;
+    const {userName, role, token} = props.userData;
     
     return (
         <div className="container">
             <Jumbotron>
-                {!isSignedIn ? 
+                {!token ? 
                     <React.Fragment>
                         <h2 className="display-3">{message}</h2>
                         <p className="lead">Login and manage your customers database with the User Manager application.</p>
@@ -47,7 +47,7 @@ const HomePage = (props) => {
                         </NavLink>
                     </React.Fragment> :
                     <React.Fragment>
-                        <h1 className="display-3">Welcome {userName}!</h1>
+                        <h2 className="display-3">Welcome {userName}!</h2>
                         <p className="lead">{role === 'admin' ? 'You can manage your users here.' : 'You can see and edit you profile here.'}</p>
                         <hr className="my-2" />
                         <NavLink 

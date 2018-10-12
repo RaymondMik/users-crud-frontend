@@ -14,7 +14,6 @@ import {
 const initialState = {
     isFetching: false,
     errors: false,
-    isSignedIn: false,
     responseReceived: null,
     _id: null,
     token: null,
@@ -41,21 +40,24 @@ const userData = (state = initialState, action) => {
                 responseReceived: null
             };
         case SIGN_USER_IN_SUCCESS:
+            const {receivedAt, userData: {_id, token, username, email, role}} = action;
             return {
                 ...state,
                 isFetching: false,
                 errors: false,
-                isSignedIn: true,
                 responseReceived: 'success',
-                receivedAt: action.receivedAt,
-                ...action.userData
+                receivedAt,
+                _id,
+                token,
+                username,
+                email,
+                role
             };
         case SIGN_USER_IN_FAILURE:
             return {
                 ...state,
                 isFetching: false,
                 errors: action.errors,
-                isSignedIn: false,
                 responseReceived: 'failure',
                 receivedAt: action.receivedAt
             };
@@ -95,7 +97,6 @@ const userData = (state = initialState, action) => {
                 ...state,
                 isFetching: false,
                 errors: false,
-                isSignedIn: false,
                 responseReceived: 'success',
                 _id: null,
                 token: null,

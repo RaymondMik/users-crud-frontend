@@ -14,33 +14,36 @@ class UserForm extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.userData.isSignedIn) this.props.history.push('/');
+    if (this.props.userData.token) this.props.history.push('/');
 
     const {responseReceived} = this.props.userData;
     if (responseReceived === 'success') setTimeout(() => {
       const redirectDestination = this.props.location.pathname === '/sign-up' ? '/sign-in' : '/';
       this.props.resetSignUserState();
       this.props.history.push(redirectDestination);
-      this.setState({
-        userName: '',
-        email: '',
-        password: ''
-      });
+
+      this.resetState();
     }, 2000);
   }
 
   componentDidUpdate() {
     const {responseReceived} = this.props.userData;
     if (responseReceived === 'success') setTimeout(() => {
-      const redirectDestination = this.props.location.pathname === '/sign-up' ? '/sign-in' : '/';
       this.props.resetSignUserState();
+      
+      this.resetState();
+
+      const redirectDestination = this.props.location.pathname === '/sign-up' ? '/sign-in' : '/';
       this.props.history.push(redirectDestination);
-      this.setState({
-        userName: '',
-        email: '',
-        password: ''
-      });
     }, 2000);
+  }
+
+  resetState() {
+    this.setState({
+      userName: '',
+      email: '',
+      password: ''
+    });
   }
 
   handleFormOnChange(e) {
@@ -65,13 +68,15 @@ class UserForm extends React.Component {
         password: this.state.password
       });
     }
+
+    this.resetState();
   }
 
   render() {
-    const {responseReceived, isSignedIn} = this.props.userData;
+    const {responseReceived, token} = this.props.userData;
     const displayAlertClass = !responseReceived ? 'hide' : '';
     const alertColor = responseReceived === 'success' ? 'success' : 'danger';
-    const successMessage = responseReceived === 'success' && isSignedIn ? 'logged in! Redirecting to home...' : 'created a new user! Redirecting to sign in...';
+    const successMessage = responseReceived === 'success' && token ? 'logged in! Redirecting to home...' : 'created a new user! Redirecting to sign in...';
     const alertMessage = responseReceived === 'failure' ? 'There was an error!' : `You successfully ${successMessage}`;
     const isSignUpForm = this.props.location.pathname === '/sign-up' ? true : false;
 

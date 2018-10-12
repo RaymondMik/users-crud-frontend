@@ -30,7 +30,7 @@ class NavBar extends React.Component {
     }
 
     render() {
-        const {isSignedIn, _id, token} = this.props.userData;
+        const {_id, token} = this.props.userData;
         return (
             <div className="container-fluid">
                 <Navbar color="light" light expand="md">
@@ -45,14 +45,14 @@ class NavBar extends React.Component {
                                 activeClassName="selected"
                             >Home</RouterNavLink>
                         </NavItem>
-                        {isSignedIn && 
+                        {token && 
                             <NavItem>
                                 <NavLink 
                                     className="nav-link"
                                     onClick={() => this.props.signUserOut(_id, token)}
                                 >Sign Out</NavLink>
                             </NavItem>}
-                        {!isSignedIn &&
+                        {!token &&
                             <React.Fragment>
                                 <NavItem>
                                     <RouterNavLink 
