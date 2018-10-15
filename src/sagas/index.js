@@ -9,8 +9,7 @@ import globalUrl from '../utilities/globalUrl';
 
 export function* getRootSaga() {
     try {
-        yield put(rootActions.getRoot());
-        const data = yield call(getData, `${globalUrl}`, 'root');
+        const data = yield call(getData, `${globalUrl}`, {}, 'root');
         yield put(rootActions.getRootSuccess(data));
     } catch(error) {
         yield put(rootActions.getRootFailure(error));
@@ -49,14 +48,18 @@ export function* signUserOutSaga(signOutData) {
     }
 }
 
-export function* getUsersList(token) {
+export function* getUsersList(getUserAction) {
     try {
-        yield call(getData, `${globalUrl}/users`, token, 'users');
-        yield put(getUsersActions.getUsers());
-        yield put(getUsersActions.getUsersSuccess());
+        const {token} = getUserAction;
+        const usersList = yield call(getData, `${globalUrl}/users`, token, 'users');
+        yield put(getUsersActions.getUsersSuccess(usersList));
     } catch(error) {
         yield put(getUsersActions.getUsersFailure(error));
     }
+}
+
+function* watchGetRoot() {
+    yield takeLatest(rootActions.GET_ROOT, getRootSaga); 
 }
 
 function* watchSignUserIn() {
@@ -77,7 +80,7 @@ function* watchGetUsersList() {
 
 // Sagas that will be called when the store is initialised
 function* rootSaga() {
-    yield fork(getRootSaga);
+    yield fork(watchGetRoot);
     yield fork(watchSignUserIn);
     yield fork(watchSignUserUp);
     yield fork(watchSignUserOut);

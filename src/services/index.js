@@ -6,15 +6,15 @@
  * @returns {JSON} response from API.
  */
 const getData = async(endpoint, payload, type) => {
-    const requestParams = {
-        method: 'GET',
-        mode: 'cors',
-        headers: {}
-    };
-
-    if (type === 'users') requestParams.headers['x-auth'] = payload;
-
     try {
+        const requestParams = {
+            method: 'GET',
+            mode: 'cors',
+            headers: {}
+        };
+    
+        if (type === 'users') requestParams.headers['x-auth'] = payload;
+        
         const response = await fetch(
             endpoint, 
             requestParams
@@ -24,7 +24,7 @@ const getData = async(endpoint, payload, type) => {
 
         return response.json();
     } catch(e) {
-        throw new Error(`There was the following problem: ${e} while fetching ${type}`);
+        throw new Error(`${e}`);
     }
 };
 

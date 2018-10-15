@@ -6,7 +6,7 @@ import {
 const initialState = {
     isFetching: false,
     errors: false,
-    list: {}
+    list: []
 };
 
 /**

@@ -5,11 +5,13 @@ export const GET_USERS_FAILURE = 'GET_USERS_FAILURE';
 /**
  * Get Users.
  * 
+ * @param {string} token.
  * @returns {Object} action.
  */
-export const getUsers = () => {
+export const getUsers = (token) => {
     return {
         type: GET_USERS,
+        token,
         sentAt: Date.now()
     };
 };

@@ -91,10 +91,11 @@ class NavBar extends React.Component {
                             signUserUp={this.props.signUserUp}
                             resetSignUserState={this.props.resetSignUserState}
                     />)}/>
-                    <Route path='/user-page' component={UserPage} />
+                    <Route path='/user-page/:id' component={UserPage} />
                     <Route path='/user-list' exact render={(props) => (
                         <UserList {...props}
                             userData={this.props.userData}
+                            usersList={this.props.usersList}
                             getUsers={this.props.getUsers}
                         />
                     )}/>

@@ -15,6 +15,7 @@ const App = (props) => {
             <NavBar 
                 rootData={props.rootData}
                 userData={props.userData}
+                usersList={props.usersList}
                 signUserIn={props.signUserIn}
                 signUserUp={props.signUserUp}
                 signUserOut={props.signUserOut}
@@ -28,6 +29,7 @@ const App = (props) => {
 App.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
+    usersList: PropTypes.object,
     signUserIn: PropTypes.func,
     signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,

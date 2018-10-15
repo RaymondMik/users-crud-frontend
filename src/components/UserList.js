@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Alert, Button, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import PropTypes from 'prop-types';
 
 class UserList extends React.Component {
@@ -9,6 +9,8 @@ class UserList extends React.Component {
     }
     
     render() {
+        const {role} = this.props.userData;
+
         return (
             <div className="container">
                 <div>
@@ -17,36 +19,42 @@ class UserList extends React.Component {
                         <BreadcrumbItem active>User List </BreadcrumbItem>
                     </Breadcrumb>
                 </div>
-                <Table striped>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>First Name</th>
-                            <th>Last Name</th>
-                            <th>Username</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </Table>
+                {role === 'admin' ?
+                    <Table striped>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>EMAIL</th>
+                                <th>USER NAME</th>
+                                <th>ROLE</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.props.usersList.list.map((user) => {
+                                return (
+                                    <tr key={`user-${user._id}`}>
+                                        <td>{user._id}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.userName}</td>
+                                        <td>{user.role}</td>
+                                        <td>
+                                            <Button 
+                                                outline color="primary" 
+                                                size="sm"
+                                                onClick={() => this.props.history.push(`/user-page/${user._id}`)}>Edit
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </Table> 
+                : 
+                    <Alert color="danger">
+                        You are not allowed to perform this operation!
+                    </Alert>
+                }
             </div>
         );
     }
@@ -54,6 +62,7 @@ class UserList extends React.Component {
 
 UserList.propTypes = {
     userData: PropTypes.object,
+    usersList: PropTypes.object,
     history: PropTypes.any,
     getUsers: PropTypes.func
 };
