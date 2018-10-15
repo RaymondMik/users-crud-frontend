@@ -37,7 +37,7 @@ const HomePage = (props) => {
                         >
                             Sign In
                         </NavLink>
-                        <span><b> or </b></span>
+                        <span> {  } </span>
                         <NavLink 
                             className="btn btn-primary"
                             to={'/sign-up'} 
@@ -59,7 +59,7 @@ const HomePage = (props) => {
                         </NavLink>
                         {role === 'admin' && 
                             <React.Fragment>
-                                <span><b> or </b></span>
+                                <span> { } </span>
                                 <NavLink 
                                     className="btn btn-primary"
                                     to={'/user-list'} 

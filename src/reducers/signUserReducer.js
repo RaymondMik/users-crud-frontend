@@ -17,7 +17,7 @@ const initialState = {
     responseReceived: null,
     _id: null,
     token: null,
-    username: null,
+    userName: null,
     email: null,
     role: null
 };
@@ -40,7 +40,7 @@ const userData = (state = initialState, action) => {
                 responseReceived: null
             };
         case SIGN_USER_IN_SUCCESS:
-            const {receivedAt, userData: {_id, token, username, email, role}} = action;
+            const {receivedAt, userData: {_id, token, userName, email, role}} = action;
             return {
                 ...state,
                 isFetching: false,
@@ -49,7 +49,7 @@ const userData = (state = initialState, action) => {
                 receivedAt,
                 _id,
                 token,
-                username,
+                userName,
                 email,
                 role
             };
