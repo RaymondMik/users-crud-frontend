@@ -2,11 +2,13 @@ import { combineReducers } from 'redux';
 import rootData from './rootReducer';
 import usersList from './getUsersReducer';
 import userData from './signUserReducer';
+import { reducer as formReducer } from 'redux-form';
 
 const reducers = combineReducers({
     rootData,
     usersList,
-    userData
+    userData,
+    form: formReducer
 });
 
 // selectors used in mapStateToProps()

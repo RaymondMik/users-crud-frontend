@@ -13,12 +13,10 @@ class UserList extends React.Component {
 
         return (
             <div className="container">
-                <div>
-                    <Breadcrumb>
-                        <BreadcrumbItem onClick={() => this.props.history.push('/')}>Home</BreadcrumbItem>
-                        <BreadcrumbItem active>User List </BreadcrumbItem>
-                    </Breadcrumb>
-                </div>
+                <Breadcrumb>
+                    <BreadcrumbItem onClick={() => this.props.history.push('/')}>Home</BreadcrumbItem>
+                    <BreadcrumbItem active>User List </BreadcrumbItem>
+                </Breadcrumb>
                 {role === 'admin' ?
                     <Table striped>
                         <thead>

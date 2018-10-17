@@ -77,21 +77,29 @@ class NavBar extends React.Component {
                         <HomePage {...props}
                             rootData={this.props.rootData}
                             userData={this.props.userData}
-                        />)}/>
+                        />
+                    )}/>
                     <Route path='/sign-in' exact render={(props) => (
                         <UserForm {...props}
                             userData={this.props.userData}
                             signUserIn={this.props.signUserIn}
                             resetSignUserState={this.props.resetSignUserState}
-                        />)}/>
+                        />
+                    )}/>
                     <Route path='/sign-up' exact render={(props) => (
                         <UserForm {...props}
                             userData={this.props.userData}
                             signUserIn={this.props.signUserIn}
                             signUserUp={this.props.signUserUp}
                             resetSignUserState={this.props.resetSignUserState}
-                    />)}/>
-                    <Route path='/user-page/:id' component={UserPage} />
+                        />
+                    )}/>
+                    <Route path='/user-page/:id' exact render={(props) => (
+                        <UserPage {...props}
+                            userData={this.props.userData}
+                            usersList={this.props.usersList}
+                        />
+                    )}/>
                     <Route path='/user-list' exact render={(props) => (
                         <UserList {...props}
                             userData={this.props.userData}
@@ -108,6 +116,7 @@ class NavBar extends React.Component {
 NavBar.propTypes = {
     rootData: PropTypes.object,
     userData: PropTypes.object,
+    usersList: PropTypes.object,
     signUserIn: PropTypes.func,
     signUserUp: PropTypes.func,
     signUserOut: PropTypes.func,

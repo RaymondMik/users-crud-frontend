@@ -19,7 +19,6 @@ class UserForm extends React.Component {
     const {responseReceived} = this.props.userData;
     if (responseReceived === 'success') setTimeout(() => {
       const redirectDestination = this.props.location.pathname === '/sign-up' ? '/sign-in' : '/';
-      this.props.resetSignUserState();
       this.props.history.push(redirectDestination);
 
       this.resetState();
