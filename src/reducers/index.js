@@ -3,12 +3,15 @@ import rootData from './rootReducer';
 import usersList from './getUsersReducer';
 import userData from './signUserReducer';
 import { reducer as formReducer } from 'redux-form';
+import userPageFormReducer from './userPageFormReducer';
 
 const reducers = combineReducers({
     rootData,
     usersList,
     userData,
-    form: formReducer
+    form: formReducer.plugin({
+        userPage: userPageFormReducer
+    })
 });
 
 // selectors used in mapStateToProps()

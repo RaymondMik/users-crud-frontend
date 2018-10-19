@@ -1,6 +1,7 @@
 import React from 'react';
-import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
+import { RenderInput } from '../utilities/formRenderer';
 import isEmail from 'validator/lib/isEmail';
 import PropTypes from 'prop-types';
 
@@ -29,29 +30,6 @@ const validate = values => {
 //     return warnings;
 // };
 
-const createRenderer = (render) => ({input, type, label, meta, ...otherProps}) => (
-    <FormGroup row className={[
-        meta.error && meta.touched ? 'error' : '',
-        meta.active ? 'active' : ''
-    ].join(' ')}>
-        {/*<div>{JSON.stringify(meta, 0, 2)}</div>*/}
-        <Label for={label} sm={2}>{label}</Label>
-        <Col sm={10}>
-            {render(input, type, label, otherProps)}
-            {meta.touched && !meta.active && ((meta.error && <span>{meta.error}</span>) || (meta.warning && <span>{meta.warning}</span>))}
-        </Col>
-    </FormGroup>
-);
-
-const RenderInput = createRenderer((input, type, label) => <Input id={label} type={type} {...input} />);
-const RenderSelect = createRenderer((input, type = 'select', label, {children}) => {
-    return (    
-        <Input id={label} type={type} name="select" {...input}>
-            {children}
-        </Input>
-    );
-});
-
 let UserPage = (props) => {
     const { handleSubmit, pristine, reset, submitting } = props;
 
@@ -65,30 +43,18 @@ let UserPage = (props) => {
     }
 
     const marietto = (value) => {console.log(999999, value);};
-    const options = [1,2,3,4,5,6];
+
     return (
-        <div className="container">
-            <h2>User Page</h2>
+        <div className="narrow-container">
+            <h2>Manage user: {currentUser.userName}</h2>
             <Form className="user-app-form" onSubmit={handleSubmit(marietto)}>
-                {/*<FormGroup row>
-                    <Label for="userNameInput" sm={2}>User Name</Label>
-                    <Col sm={10}>
-                        <Field 
-                            name="userName" 
-                            component={renderInput}
-                        />
-                    </Col>
-                </FormGroup>*/}
-                <Field name='userName' type='type' label='User Name' component={RenderInput}/>
-                <Field name='email' type='email' label='Email' component={RenderInput}/>
-                <Field name='options' type='select' label='Options' component={RenderSelect}>
-                    {options.map(item => <option key={item} value={item}>{item}</option>)}
-                </Field>
-                
-                <Button type="submit" disabled={submitting} color="primary" >Submit</Button>
-                <Button color="danger">Delete</Button>
-                {/* if status is edit */}<Button color="secondary">Change password</Button>
+                <Field name='userName' type='type' label='User Name' placeholder={currentUser.userName} component={RenderInput}/>
+                <Field name='email' type='email' label='Email' placeholder={currentUser.email} component={RenderInput}/>
+                <Button type="submit" disabled={submitting} color="primary" >Submit</Button>{' '}
+                <Button color="danger">Delete</Button>{' '}
+                <Button color="secondary">Cancel</Button>
             </Form>
+            <Button color="info">Edit</Button>
         </div>
     );
 };
