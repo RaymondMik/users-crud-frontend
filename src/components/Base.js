@@ -15,6 +15,7 @@ const mapStateToProps = (state)  => {
         rootData: selectors.getRoot(state),
         userData: selectors.getUserData(state),
         usersList: selectors.getUsers(state),
+        form: state.form,
     };
 };
 

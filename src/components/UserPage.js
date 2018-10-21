@@ -1,4 +1,6 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { editUserPageForm, cancelEditUserPageForm } from '../actions/userPageFormActions';
 import { Button, Form } from 'reactstrap';
 import { Field, reduxForm } from 'redux-form';
 import { RenderInput } from '../utilities/formRenderer';
@@ -31,10 +33,7 @@ const validate = values => {
 // };
 
 let UserPage = (props) => {
-    const { handleSubmit, pristine, reset, submitting } = props;
-
-    const urlId = props.match.params.id;
-    const {usersList: {list}, userData, userData: {role}} = props;
+    const {usersList: {list}, userData, userData: {role}, match: {params: {id: urlId}}, edit, handleSubmit, pristine, reset, submitting} = props;
     let currentUser = null;
     if (list.length && role === 'admin') {
         currentUser = list.find(({_id}) => _id === urlId);
@@ -42,19 +41,44 @@ let UserPage = (props) => {
         currentUser = userData;
     }
 
-    const marietto = (value) => {console.log(999999, value);};
+    const test = (value) => {console.log(999999, value);};
 
     return (
         <div className="narrow-container">
             <h2>Manage user: {currentUser.userName}</h2>
-            <Form className="user-app-form" onSubmit={handleSubmit(marietto)}>
-                <Field name='userName' type='type' label='User Name' placeholder={currentUser.userName} component={RenderInput}/>
-                <Field name='email' type='email' label='Email' placeholder={currentUser.email} component={RenderInput}/>
-                <Button type="submit" disabled={submitting} color="primary" >Submit</Button>{' '}
-                <Button color="danger">Delete</Button>{' '}
-                <Button color="secondary">Cancel</Button>
+            <Form className="user-page-form" onSubmit={handleSubmit(test)}>
+                <Field 
+                    name='userName'
+                    type='text' label='User Name'
+                    placeholder={currentUser.userName}
+                    props={{
+                        disabled: !edit,
+                        value: currentUser.userName
+                    }}
+                    component={RenderInput} 
+                />
+                <Field 
+                    name='email'
+                    type='email'
+                    label='Email'
+                    placeholder={currentUser.email} 
+                    props={{
+                        disabled: !edit,
+                        value: currentUser.email
+                    }}
+                    component={RenderInput} 
+                />
+                {edit && 
+                    <div className="user-page-form__buttons">
+                        <Button type="submit" disabled={submitting} color="primary" >Save</Button>{' '}
+                        <Button color="danger">Delete</Button>{' '}
+                    </div>
+                }
             </Form>
-            <Button color="info">Edit</Button>
+            {!edit ? 
+                <Button color="info" onClick={() => props.editUserPageForm()}>Edit</Button> :
+                <Button color="secondary" onClick={() => props.cancelEditUserPageForm()}>Cancel</Button>
+            }
         </div>
     );
 };
@@ -62,11 +86,15 @@ let UserPage = (props) => {
 UserPage.propTypes = {
     userData: PropTypes.object,
     usersList: PropTypes.object,
-    match: PropTypes.any,
-    handleSubmit: PropTypes.any,
-    pristine: PropTypes.any,
-    reset: PropTypes.any,
-    submitting: PropTypes.any
+    edit: PropTypes.boolean,
+    editUserPageForm: PropTypes.func,
+    cancelEditUserPageForm: PropTypes.func,
+    form: PropTypes.string,
+    handleSubmit: PropTypes.any, 
+    pristine: PropTypes.any, 
+    reset: PropTypes.any, 
+    submitting: PropTypes.any, 
+    match: PropTypes.any
 };
 
 UserPage = reduxForm({
@@ -75,5 +103,21 @@ UserPage = reduxForm({
     validate
     // warn
 })(UserPage);
+
+UserPage = connect(
+    // props
+    (state, otherProps) => ({
+        ...otherProps,
+        initialValues: state.usersList.list.length ? state.usersList.list[urlId] : state.userData,
+        userData: state.userData,
+        usersList: state.usersList,
+        edit: state.form.userPage.edit
+    }),
+    // actions
+    {
+        editUserPageForm: editUserPageForm,
+        cancelEditUserPageForm: cancelEditUserPageForm,
+    }
+  )(UserPage);
 
 export default UserPage;
