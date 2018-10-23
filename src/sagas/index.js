@@ -4,7 +4,7 @@ import { getData, postData } from '../services';
 import * as rootActions from '../actions/rootActions';
 import * as signUserActions from '../actions/signUserActions';
 import * as getUsersActions from '../actions/getUsersActions';
-import {saveUserToStorage, deleteUserFromStorage} from '../utilities/sessionStorageHandler';
+import { deleteStateFromStorage } from '../utilities/sessionStorageHandler';
 import globalUrl from '../utilities/globalUrl';
 
 export function* getRootSaga() {
@@ -21,7 +21,6 @@ export function* signUserInSaga(signInData) {
         const {userData} = signInData;
         const user = yield call(postData, `${globalUrl}/users/sign-in`, userData, 'signIn');
         yield put(signUserActions.signUserInSuccess(user));
-        yield saveUserToStorage(user);
     } catch(error) {
         yield put(signUserActions.signUserInFailure(error));
     }
@@ -40,7 +39,7 @@ export function* signUserUpSaga(signUpData) {
 export function* signUserOutSaga(signOutData) {
     try {
         yield call(postData, `${globalUrl}/users/sign-out/${signOutData._id}`, signOutData.token, 'signOut');
-        yield deleteUserFromStorage();
+        yield deleteStateFromStorage();
         yield put(signUserActions.signUserOutSuccess());
         yield put(signUserActions.resetSignUserState());
     } catch(error) {

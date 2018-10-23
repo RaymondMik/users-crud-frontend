@@ -40,18 +40,17 @@ const userData = (state = initialState, action) => {
                 responseReceived: null
             };
         case SIGN_USER_IN_SUCCESS:
-            const {receivedAt, userData: {_id, token, userName, email, role}} = action;
             return {
                 ...state,
                 isFetching: false,
                 errors: false,
                 responseReceived: 'success',
-                receivedAt,
-                _id,
-                token,
-                userName,
-                email,
-                role
+                receivedAt: action.receivedAt,
+                _id: action.userData._id,
+                token: action.userData.token,
+                userName: action.userData.userName,
+                email: action.userData.email,
+                role: action.userData.role
             };
         case SIGN_USER_IN_FAILURE:
             return {

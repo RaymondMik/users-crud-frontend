@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Jumbotron } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -19,7 +20,7 @@ const HomePage = (props) => {
     }
 
     const message = props.rootData.data.message;
-    const {userName, role, token} = props.userData;
+    const {userData, userData: {_id, userName, role, token}} = props;
     
     return (
         <div className="container">
@@ -52,7 +53,13 @@ const HomePage = (props) => {
                         <hr className="my-2" />
                         <NavLink 
                             className="btn btn-primary"
-                            to={'/user-page'}
+                            to={{
+                                pathname: `/user-page/${_id}`,
+                                state: {
+                                    userData,
+                                    previousPath: location.pathname
+                                }
+                            }}
                             activeClassName='selected'
                         >
                             Manage your profile
@@ -70,7 +77,7 @@ const HomePage = (props) => {
                             </React.Fragment>
                         }
                     </React.Fragment>}
-        </Jumbotron>
+            </Jumbotron>
         </div>
     );
 };
@@ -80,4 +87,14 @@ HomePage.propTypes = {
     userData: PropTypes.object
 };
 
-export default HomePage;
+// connect to Redux store
+export default connect(
+    // props
+    (state, otherProps) => ({
+        ...otherProps,
+        rootData: state.rootData,
+        userData: state.userData
+    }),
+    // actions
+    {}
+  )(HomePage);

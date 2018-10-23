@@ -74,10 +74,7 @@ class NavBar extends React.Component {
                 </Navbar>
                 <Switch>
                     <Route path='/' exact render={(props) => (
-                        <HomePage {...props}
-                            rootData={this.props.rootData}
-                            userData={this.props.userData}
-                        />
+                        <HomePage {...props} />
                     )}/>
                     <Route path='/sign-in' exact render={(props) => (
                         <UserForm {...props}
@@ -95,10 +92,7 @@ class NavBar extends React.Component {
                         />
                     )}/>
                     <Route path='/user-page/:id' exact render={(props) => (
-                        <UserPage {...props}
-                            userData={this.props.userData}
-                            usersList={this.props.usersList}
-                        />
+                        <UserPage {...props} />
                     )}/>
                     <Route path='/user-list' exact render={(props) => (
                         <UserList {...props}

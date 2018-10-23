@@ -3,7 +3,7 @@ import rootData from './rootReducer';
 import usersList from './getUsersReducer';
 import userData from './signUserReducer';
 import { reducer as formReducer } from 'redux-form';
-import userPageFormReducer from './userPageFormReducer';
+import userPageFormReducer from './formReducer';
 
 const reducers = combineReducers({
     rootData,

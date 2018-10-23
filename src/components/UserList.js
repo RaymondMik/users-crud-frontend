@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 import { Alert, Button, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import PropTypes from 'prop-types';
+import { selectUser } from '../actions/formActions';
 
 class UserList extends React.Component {
     componentDidMount() {
@@ -14,8 +17,8 @@ class UserList extends React.Component {
         return (
             <div className="container">
                 <Breadcrumb>
-                    <BreadcrumbItem onClick={() => this.props.history.push('/')}>Home</BreadcrumbItem>
-                    <BreadcrumbItem active>User List </BreadcrumbItem>
+                    <BreadcrumbItem><NavLink to={{pathname: '/'}}>Home</NavLink></BreadcrumbItem>
+                    <BreadcrumbItem active>User List</BreadcrumbItem>
                 </Breadcrumb>
                 {role === 'admin' ?
                     <Table striped>
@@ -37,10 +40,18 @@ class UserList extends React.Component {
                                         <td>{user.userName}</td>
                                         <td>{user.role}</td>
                                         <td>
-                                            <Button 
-                                                outline color="primary" 
-                                                size="sm"
-                                                onClick={() => this.props.history.push(`/user-page/${user._id}`)}>Edit
+                                            <Button outline color="primary" size="sm" onClick={() => this.props.selectUser(user)}>
+                                                <NavLink
+                                                    to={{
+                                                        pathname: `/user-page/${user._id}`,
+                                                        state: {
+                                                            userData: user,
+                                                            previousPath: location.pathname
+                                                        }
+                                                    }}
+                                                >
+                                                    Edit
+                                                </NavLink>
                                             </Button>
                                         </td>
                                     </tr>
@@ -61,8 +72,15 @@ class UserList extends React.Component {
 UserList.propTypes = {
     userData: PropTypes.object,
     usersList: PropTypes.object,
+    selectUser: PropTypes.func,
     history: PropTypes.any,
     getUsers: PropTypes.func
 };
 
-export default UserList;
+// connect to Redux store 
+export default connect(
+    // props
+    () => ({}),
+    // actions
+    { selectUser: selectUser }
+  )(UserList);

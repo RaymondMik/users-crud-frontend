@@ -1,5 +1,5 @@
-export const getUserFromStorage = () => {
-    const storageState = sessionStorage.getItem('user');
+export const getStateFromStorage = () => {
+    const storageState = sessionStorage.getItem('state');
     // Storage null
     if (storageState === null) return {};
     const parsedStorageState = JSON.parse(storageState);
@@ -7,17 +7,17 @@ export const getUserFromStorage = () => {
     return parsedStorageState;
 };
 
-export const saveUserToStorage = (userData) => {
+export const saveStateToStorage = (state) => {
     try {
-        sessionStorage.setItem('user', JSON.stringify(userData));
+        sessionStorage.setItem('state', JSON.stringify(state));
     } catch (err) {
         return {};
     }
 };
 
-export const deleteUserFromStorage = () => {
+export const deleteStateFromStorage = () => {
     try {
-        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('state');
     } catch (err) {
         return {};
     }
