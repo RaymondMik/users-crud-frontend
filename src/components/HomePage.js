@@ -56,7 +56,7 @@ const HomePage = (props) => {
                             to={{
                                 pathname: `/user-page/${_id}`,
                                 state: {
-                                    userData,
+                                    isFromList: false,
                                     previousPath: location.pathname
                                 }
                             }}

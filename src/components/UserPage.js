@@ -6,7 +6,8 @@ import { Field, reduxForm } from 'redux-form';
 import { RenderInput } from '../utilities/formRenderer';
 import isEmail from 'validator/lib/isEmail';
 import PropTypes from 'prop-types';
-import { editUserPageForm, cancelEditUserPageForm, deselectUser } from '../actions/formActions';
+import { editUserPageForm, cancelEditUserPageForm, selectUserForForm, deselectUserForForm } from '../actions/formActions';
+import { updateUser } from '../actions/updateUserActions';
 
 const validate = values => {  
     const errors = {};
@@ -35,13 +36,35 @@ const validate = values => {
 
 class UserPage extends React.Component {
     componentWillUnmount() {
-        this.props.deselectUser();
+        this.props.deselectUserForForm();
+        this.props.cancelEditUserPageForm();
     }
-    render() {
-        const {edit, handleSubmit, pristine, reset, submitting} = this.props;
-        const {userData} = this.props.location.state;
 
-        const test = (value) => {console.log(999999, value);};
+    handleCancelBtn() {
+        this.props.cancelEditUserPageForm();
+        this.props.reset();
+    }
+
+    render() {
+        console.log(this.props);
+        const {edit, handleSubmit, pristine, reset, submitting} = this.props;
+        const {isFromList} = this.props.location.state;
+        const {userData: {token}, usersList: {list}} = this.props;
+
+        let userData = null;
+        if (isFromList && list.length) {
+            const {match: {params: {id}}} = this.props;
+            userData = list.find(user => user._id === id);
+        }
+
+        if (!isFromList) {
+            userData = this.props.userData;
+        }
+        
+        const updateUser = (inputObject) => { 
+            this.props.selectUserForForm(userData);
+            this.props.updateUser({newData: inputObject, token, _id: userData._id}); 
+        };
 
         return (
             <div className="container">
@@ -50,8 +73,8 @@ class UserPage extends React.Component {
                     <BreadcrumbItem><NavLink to={{pathname: '/user-list'}}>User List</NavLink></BreadcrumbItem>
                     <BreadcrumbItem active>User Page</BreadcrumbItem>
                 </Breadcrumb>
-                <h2>Manage user: {userData.userName}</h2>
-                <Form className="user-page-form" onSubmit={handleSubmit(test)}>
+                <h3 className="user-page__title">{userData.userName}</h3>
+                <Form className="user-page__form" onSubmit={handleSubmit(updateUser)}>
                     <Field 
                         name='userName'
                         type='text' label='User Name'
@@ -68,7 +91,7 @@ class UserPage extends React.Component {
                         component={RenderInput}
                     />
                     {edit && 
-                        <div className="user-page-form__buttons">
+                        <div className="user-page__form__buttons">
                             <Button type="submit" disabled={submitting} color="primary" >Save</Button>{' '}
                             <Button color="danger">Delete</Button>{' '}
                         </div>
@@ -76,19 +99,22 @@ class UserPage extends React.Component {
                 </Form>
                 {!edit ? 
                     <Button color="info" onClick={() => this.props.editUserPageForm()}>Edit</Button> :
-                    <Button color="secondary" onClick={() => this.props.cancelEditUserPageForm()}>Cancel</Button>
+                    <Button color="secondary" onClick={this.handleCancelBtn.bind(this)}>Cancel</Button>
                 }
             </div>
-        );
+        );     
     }
 }
 
 UserPage.propTypes = {
     userData: PropTypes.object,
+    usersList: PropTypes.object,
     edit: PropTypes.boolean,
     editUserPageForm: PropTypes.func,
     cancelEditUserPageForm: PropTypes.func,
-    deselectUser: PropTypes.func,
+    selectUserForForm: PropTypes.func,
+    deselectUserForForm: PropTypes.func,
+    updateUser: PropTypes.func,
     form: PropTypes.string,
     handleSubmit: PropTypes.any, 
     pristine: PropTypes.any,
@@ -103,21 +129,29 @@ export default connect(
     // props
     (state, otherProps) => {
         const {usersList: {list}, userData} = state;
-        const {location: {state: {userData: currentUser}}} = otherProps;
-        const initialValues = (currentUser._id !== userData._id) ? list.find((user) => currentUser._id === user._id) : userData;
+        const {match: {params: {id: urlId}}} = otherProps;
+        const user = (urlId !== userData._id) ? list.find((user) => urlId === user._id) : userData;
+      
         return {
             ...otherProps,
             // userData is passed via React Router
             // set initial values for form inputs
-            initialValues,
+            initialValues: {
+               userName: user.userName,
+               email: user.email
+            },
+            userData: state.userData,
+            usersList: state.usersList,
             edit: state.form.userPage.edit
         };
     },
     // actions
     {
-        editUserPageForm: editUserPageForm,
-        cancelEditUserPageForm: cancelEditUserPageForm,
-        deselectUser: deselectUser
+        editUserPageForm,
+        cancelEditUserPageForm,
+        selectUserForForm,
+        deselectUserForForm,
+        updateUser
     }
     // connect to Redux Form
     )(reduxForm({

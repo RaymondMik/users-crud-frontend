@@ -1,9 +1,10 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import {fork} from 'redux-saga/effects';
-import { getData, postData } from '../services';
+import { getData, postData, patchData } from '../services';
 import * as rootActions from '../actions/rootActions';
 import * as signUserActions from '../actions/signUserActions';
 import * as getUsersActions from '../actions/getUsersActions';
+import * as updateUserActions from '../actions/updateUserActions';
 import { deleteStateFromStorage } from '../utilities/sessionStorageHandler';
 import globalUrl from '../utilities/globalUrl';
 
@@ -47,13 +48,27 @@ export function* signUserOutSaga(signOutData) {
     }
 }
 
-export function* getUsersList(getUserAction) {
+export function* getUsersListSaga(getUserAction) {
     try {
         const {token} = getUserAction;
         const usersList = yield call(getData, `${globalUrl}/users`, token, 'users');
         yield put(getUsersActions.getUsersSuccess(usersList));
     } catch(error) {
         yield put(getUsersActions.getUsersFailure(error));
+    }
+}
+
+export function* updateUserSaga(updateUserAction) {
+    try {
+        const {payload: {newData, token, _id}} = updateUserAction;
+        console.log(1111, newData, token, _id);
+        const updatedUser = yield call(patchData, `${globalUrl}/users/update/${_id}`, {newData, token});
+        // GET USER DATA FROM API
+        yield put(updateUserActions.updateUserSuccess(updatedUser));
+        // get updated usersList
+        yield put(getUsersActions.getUsers(token));
+    } catch(error) {
+        yield put(updateUserActions.updateUserFailure(error));
     }
 }
 
@@ -74,7 +89,11 @@ function* watchSignUserOut() {
 }
 
 function* watchGetUsersList() {
-    yield takeLatest(getUsersActions.GET_USERS, getUsersList); 
+    yield takeLatest(getUsersActions.GET_USERS, getUsersListSaga); 
+}
+
+function* watchUpdateUser() {
+    yield takeLatest(updateUserActions.UPDATE_USER, updateUserSaga); 
 }
 
 // Sagas that will be called when the store is initialised
@@ -84,6 +103,7 @@ function* rootSaga() {
     yield fork(watchSignUserUp);
     yield fork(watchSignUserOut);
     yield fork(watchGetUsersList);
+    yield fork(watchUpdateUser);
 }
 
 export default rootSaga;

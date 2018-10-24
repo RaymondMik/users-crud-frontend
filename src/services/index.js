@@ -96,22 +96,33 @@ const postData = async(endpoint, payload, type) => {
  * @param {Object} payload.
  * @returns {JSON} response from API.
  */
-const patchData = (endpoint, payload) => {
-    return fetch(
-        endpoint, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-        },  
-        body: JSON.stringify({
-            userName: payload.userName
-        }),
-    }).then(response => {
+const patchData = async(endpoint, payload) => {
+    // return fetch(
+    //     ).then(response => {
+    //     if (!response.ok) throw new Error(response.statusText);
+    //     return response.json();
+    // }).catch( (err) => {
+    //     throw new Error(`There was the following problem: ${err} while updating user ${payload.userName}`);
+    // });
+
+    try {
+        console.log(555, payload.newData);
+        const response = await fetch(
+            endpoint, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth': payload.token
+                },  
+                body: JSON.stringify(payload.newData),
+            }
+        );
+
         if (!response.ok) throw new Error(response.statusText);
         return response.json();
-    }).catch( (err) => {
+    } catch(err) {
         throw new Error(`There was the following problem: ${err} while updating user ${payload.userName}`);
-    });
+    }
 };
 
 /**

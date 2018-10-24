@@ -26,8 +26,15 @@ body {
     }
 }
 
-.user-page-form__buttons {
-    margin-bottom: 1em;
+.user-page__title {
+    margin: 1.5em 0 1em 0;
+}
+
+.user-page__form__buttons {
+    margin-bottom: 1.5em;
+    & > button {
+        margin-right: 0.1em;
+    }
 }
 
 .table td {

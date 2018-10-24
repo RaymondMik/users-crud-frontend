@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { Alert, Button, Table, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import PropTypes from 'prop-types';
-import { selectUser } from '../actions/formActions';
+import { selectUserForForm } from '../actions/formActions';
 
 class UserList extends React.Component {
     componentDidMount() {
@@ -40,12 +40,12 @@ class UserList extends React.Component {
                                         <td>{user.userName}</td>
                                         <td>{user.role}</td>
                                         <td>
-                                            <Button outline color="primary" size="sm" onClick={() => this.props.selectUser(user)}>
+                                            <Button outline color="primary" size="sm" onClick={() => this.props.selectUserForForm(user)}>
                                                 <NavLink
                                                     to={{
                                                         pathname: `/user-page/${user._id}`,
                                                         state: {
-                                                            userData: user,
+                                                            isFromList: true,
                                                             previousPath: location.pathname
                                                         }
                                                     }}
@@ -82,5 +82,5 @@ export default connect(
     // props
     () => ({}),
     // actions
-    { selectUser: selectUser }
+    { selectUserForForm }
   )(UserList);
